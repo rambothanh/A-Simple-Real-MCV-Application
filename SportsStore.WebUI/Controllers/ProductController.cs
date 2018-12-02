@@ -10,8 +10,10 @@ namespace SportsStore.WebUI.Controllers
     public class ProductController : Controller
     {
         //Tạo đối tượng kiểu IProductRepository sẽ tự 
-        //thêm mội đối tượng giả khi chạy hàm khởi tạo
-        //như bên dưới
+        //thêm một đối tượng giả khi chạy hàm khởi tạo
+        //như bên dưới , đối tượng giả này chính là những
+        //dữ liệu để test đơn giản mà ta đã chỉ định ở 
+        //file NinjectDependencyResolver.cs
         private IProductRepository repository;
         public ProductController(IProductRepository productRepository)
         {
