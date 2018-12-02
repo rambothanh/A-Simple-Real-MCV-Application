@@ -12,7 +12,11 @@
 
 }
 
-<!--Thêm page link-->
+<!--Thêm page link
+Dạng như sau: http://<myserver>:<port>/category/Page1
+-->
 <div class="btn-group pull-right">
-    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))
+    @Html.PageLinks(Model.PagingInfo,
+        x => Url.Action("List",
+            new { page = x, category = Model.CurrentCategory }))
 </div>
