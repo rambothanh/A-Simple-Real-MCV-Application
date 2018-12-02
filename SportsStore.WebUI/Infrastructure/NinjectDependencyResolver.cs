@@ -37,7 +37,7 @@ namespace SportsStore.WebUI.Infrastructure
             });
 
             //Ninject trả về cùng một đối tượng giả bất cứ khi nào
-            //nó nhận được yêu cầu thực hiện giao diện IProductRepository
+            //nó nhận được yêu cầu implementation lớp interface IProductRepository
             kernel.Bind<IProductRepository>().ToConstant(mock.Object);
 
             //Thay vì tạo một thể hiện mới của đối tượng implementation mỗi lần
