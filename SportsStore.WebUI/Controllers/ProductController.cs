@@ -44,7 +44,15 @@ namespace SportsStore.WebUI.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count()
+
+                    //TotalItems:tổng số lượng sản phẩm đang được hiển thị trên page
+                    //Nếu không có cate nào đang được chọn
+                    //thì lấy tất cả số lượng Product trong database
+                    //ngược lại thì lấy số lượng Product theo Cate
+
+                    TotalItems = category != null ? repository.Products.Count(p => p.Category == category):
+                        repository.Products.Count()
+
                 },
                 CurrentCategory = category
             };
