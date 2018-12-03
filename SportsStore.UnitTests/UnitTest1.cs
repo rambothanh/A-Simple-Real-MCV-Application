@@ -154,6 +154,32 @@ namespace SportsStore.UnitTests
 
         }
 
+        [TestMethod]
+        public void Can_Selected_Catgory()
+        {
+            //Arrange
+            //Tạo Mock
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[] {
+                new Product {ProductID = 1, Name = "P1", Category = "cat1"},
+                new Product {ProductID = 2, Name = "P2",Category = "cat2"},
+                new Product {ProductID = 3, Name = "P3", Category = "cat1"},
+                new Product {ProductID = 4, Name = "P4",Category = "cat3"},
+                new Product {ProductID = 5, Name = "P5",Category = "cat2"}
+            });
+            // Arrange 
+            NavController controller = new NavController(mock.Object);
+            var categoryToSelect = "cat2";
+
+            //Action
+            string result = controller.Menu(categoryToSelect).ViewBag.SelectedCategory;
+
+            //Assert
+            Assert.AreEqual(categoryToSelect, result);
+
+
+        }
+
 
     }
 }

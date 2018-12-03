@@ -16,8 +16,15 @@ namespace SportsStore.WebUI.Controllers
             repository = repo;
         }
 
-        public PartialViewResult Menu()
+        public PartialViewResult Menu(string category = null)
+           
+
         {
+            //Tạo cate đang được chọn: sẽ nhận tự động từ parameter của 
+            //phương thức Menu (đã cấu hình router)
+            ViewBag.SelectedCategory = category;
+
+
             IEnumerable<string> categories = repository.Products
                 .Select(x => x.Category)
                 .Distinct()
