@@ -127,5 +127,33 @@ namespace SportsStore.UnitTests
             Assert.IsTrue(result[1].Name == "P5" && result[1].Category == "cat2");
         }
 
+        [TestMethod]
+        public void Can_Create_Categories()
+        {
+            //Arrange
+            //Tạo Mock
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[] {
+                new Product {ProductID = 1, Name = "P1", Category = "cat1"},
+                new Product {ProductID = 2, Name = "P2",Category = "cat2"},
+                new Product {ProductID = 3, Name = "P3", Category = "cat1"},
+                new Product {ProductID = 4, Name = "P4",Category = "cat3"},
+                new Product {ProductID = 5, Name = "P5",Category = "cat2"}
+            });
+            // Arrange 
+            NavController controller = new NavController(mock.Object);
+            
+            //Action
+            string[] result = ((IEnumerable<string>)controller.Menu().Model).ToArray();
+
+            //Assert
+            Assert.AreEqual(result.Length, 3);
+            Assert.IsTrue(result[0] == "cat1" );
+            Assert.IsTrue(result[1] == "cat2");
+            Assert.IsTrue(result[2] == "cat3");
+
+        }
+
+
     }
 }
