@@ -9,13 +9,15 @@ namespace SportsStore.WebUI.Controllers
     public class CartController : Controller
     {
         private IProductRepository repository;
-
-        public CartController(IProductRepository repo)
+        private IOrderProcessor orderProcessor;
+        public CartController(IProductRepository repo, IOrderProcessor processor)
         {
             repository = repo;
+            orderProcessor = processor;
+
         }
 
-        public ViewResult Index(Cart cart,string returnUrl)
+        public ViewResult Index(Cart cart, string returnUrl)
         {
             return View(new CartIndexViewModel
             {
@@ -56,6 +58,27 @@ namespace SportsStore.WebUI.Controllers
         public ActionResult Checkout()
         {
             return View(new ShippingDetails());
+        }
+
+        [HttpPost]
+        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
+        {
+            //Kiểm tra giỏ hàng trống
+            if (cart.Lines.Count() == 0)
+            {
+                ModelState.AddModelError("", "Sorry, your cart is empty");
+            }
+
+            if (ModelState.IsValid)
+            {
+                orderProcessor.ProcessOrder(cart, shippingDetails);
+                cart.Clear();
+                return View("Completed");
+            }
+            else
+            {
+                return View(shippingDetails);
+            }
         }
     }
 }

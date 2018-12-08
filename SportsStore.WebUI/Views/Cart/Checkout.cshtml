@@ -8,45 +8,34 @@
 
 @using (Html.BeginForm())
 {
+    @Html.ValidationSummary()
     <h3>Ship to</h3>
     <div class="form-group">
         <label>Name:</label>
         @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
     </div>
-
     <h3>Address</h3>
-    <div class="form-group">
-        <label>Line 1:</label>
-        @Html.TextBoxFor(x => x.Line1, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        <label>Line 2:</label>
-        @Html.TextBoxFor(x => x.Line2, new { @class = "form-control" })
-    </div>
-    <div class="form-group">
-        <label>Line 2:</label>
-        @Html.TextBoxFor(x => x.Line2, new { @class = "form-control" })
-    </div>
 
-    <div class="form-group">
-        <label>City:</label>
-        @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
-    </div>
+    //Thuộc tính ViewData.ModelMetadata trả về một đối tượng
+    //System.Web.Mvc.ModelMetaData cung cấp thông tin về loại model của View.
 
-    <div class="form-group">
-        <label>State:</label>
-        @Html.TextBoxFor(x => x.State, new { @class = "form-control" })
-    </div>
+    //Thuộc tính Properties sử dụng trong vòng lặp foreach trả về một tập hợp
+    //các đối tượng ModelMetaData, mỗi đối tượng đại diện cho một thuộc tính
+    //được xác định bởi loại model.
 
-    <div class="form-group">
-        <label>Zip:</label>
-        @Html.TextBoxFor(x => x.Zip, new { @class = "form-control" })
-    </div>
+    foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (property.PropertyName != "Name" && property.PropertyName != "GiftWrap")
+        {
+            <div class="form-group">
+                @*Kiểm tra thuộc tính DisplayName (đã được định nghĩa trong lớp ShippingDetails)
+                    và sử dụng nó*@
+                <label>@(property.DisplayName ?? property.PropertyName)</label>
+                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+            </div>
+        }
+    }
 
-    <div class="form-group">
-        <label>Country:</label>
-        @Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
-    </div>
 
     <h3>Option</h3>
     <div class="checkbox">
@@ -58,6 +47,6 @@
     </div>
 
     <div class="text-center">
-        <input class="btn btn-primary" type="submit" value="Complete order"/>
+        <input class="btn btn-primary" type="submit" value="Complete order" />
     </div>
 }

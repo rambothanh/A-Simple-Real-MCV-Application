@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,6 +53,26 @@ namespace SportsStore.WebUI.Infrastructure
             kernel.Bind<IProductRepository>().To<EFProductRepository>();
             //Dòng bên trên cho Ninject tạo ra các cá thể của lớp
             //EFProductRepository để phục vụ các requests đến interface IProductRepository.
+            //-------------------------------------------
+            
+            //-------------------------------------------
+            //Tạo một đối tượng EmailSettings để sử dụng với phương
+            //thức Ninject WithConstructorArgument, mục đích là đưa nó vào hàm
+            //tạo EmailOrderProcessor khi các phiên bản mới được tạo cho các yêu
+            //cầu dịch vụ cho interface IOrderProcessor.
+           
+            //Thuộc tính ConfigurationManager.AppSettings đọc giá trị của 
+            //"Email.WriteAsFile" trong file Web.config
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager
+                    .AppSettings["Email.WriteAsFile"] ?? "false")
+            };
+
+
+            kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>()
+                .WithConstructorArgument("settings", emailSettings);
+
 
         }
     }
