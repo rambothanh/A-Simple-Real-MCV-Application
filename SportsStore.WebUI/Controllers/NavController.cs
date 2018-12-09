@@ -16,9 +16,7 @@ namespace SportsStore.WebUI.Controllers
             repository = repo;
         }
 
-        public PartialViewResult Menu(string category = null)
-           
-
+        public PartialViewResult Menu(string category = null , bool horizontalLayout = false)
         {
             //Tạo cate đang được chọn: sẽ nhận tự động từ parameter của 
             //phương thức Menu (đã cấu hình router)
@@ -31,7 +29,8 @@ namespace SportsStore.WebUI.Controllers
                 .OrderBy(x => x);
             //.Distinct(): loại bỏ duplicates
 
-            return PartialView(categories);
+            string viewName = horizontalLayout ? "MenuHorizontal" : "Menu";
+            return PartialView(viewName, categories);
         }
     }
 }
