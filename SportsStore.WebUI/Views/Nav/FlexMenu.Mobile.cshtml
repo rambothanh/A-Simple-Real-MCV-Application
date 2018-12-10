@@ -1,0 +1,28 @@
+﻿@model IEnumerable<string>
+
+<div data-role="navbar">
+    <ul>
+
+        @foreach (var cate in Model)
+        {
+            <li>
+                @Html.RouteLink(cate, new
+                               {
+                                   controller = "Product",
+                                   action = "List",
+                                   category = cate,
+                                   page = 1
+                               }, new
+                               {
+                                   //Lưu ý phải chuyển dấu gạch giữa "-" thành "_" :
+                                   //date-transiton thành date_transiton
+                                   date_transiton = "fade",
+                                   @class = (cate == ViewBag.SelectedCategory ? "ui-btn-active" : null)
+                               })
+            </li>
+
+        }
+
+
+    </ul>
+</div>

@@ -1,0 +1,44 @@
+﻿@model SportsStore.Domain.Entities.Product
+
+
+@*Collapsible là widget đơn giản cho phép mở rộng hoặc thu gọn nội dung
+     trên thiết bị di động để cung cấp một bản trình bày nội dung nhỏ gọn.
+    data-collapsed="false": Mở rộng nội dung sẵn khi tải trang *@
+<div data-role="collapsible" data-collapsed="false" data-content-theme="c">
+    <h2> @Model.Name</h2>
+    @*ui-grid-b: tạo container gồm 3 cột theo thứ tự: ui-block-a, ui-block-b, ui-block-c *@
+    <div class="ui-grid-b">
+        <div class="ui-block-a">
+            @Model.Description
+        </div>
+        <div class="ui-block-b">
+            <strong>(@Model.Price.ToString("c"))</strong>
+        </div>
+        <div class="ui-block-c">
+            @using (Html.BeginForm("AddToCart", "Cart"))
+            {
+                @Html.HiddenFor(x => x.ProductID)
+                @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                <input type="submit" data-inline="true" data-mini="true" value="Add to cart" />
+            }
+        </div>
+    </div>
+</div>
+
+@*<div class="well">
+        <h3>
+            <strong>@Model.Name</strong>
+            <span class="pull-right label label-primary">@Model.Price.ToString("c")</span>
+        </h3>
+        @using (Html.BeginForm("AddToCart", "Cart"))
+        {
+            <div class="pull-right">
+                @Html.HiddenFor(x => x.ProductID)
+                @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                <input type="submit" class="btn btn-success" value="Add to cart" />
+            </div>
+        }
+
+
+        <span class="lead"> @Model.Description </span>
+    </div>*@
