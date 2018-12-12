@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
 using SportsStore.Domain.Concrete;
+using SportsStore.Domain.Entities;
 
 namespace SportsStore.WebUI.Controllers
 {
@@ -19,6 +20,13 @@ namespace SportsStore.WebUI.Controllers
         public ViewResult Index()
         {
             return View(repository.Products);
+        }
+
+        public ViewResult Edit(int productID)
+        {
+            Product product = repository.Products
+                .FirstOrDefault(p => p.ProductID == productID);
+            return View(product);
         }
     }
 }
