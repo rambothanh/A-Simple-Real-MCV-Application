@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Activities.Statements
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -9,6 +10,10 @@
     <title></title>
 </head>
 <body>
+    @if (TempData["thong bao"] != null)
+    {
+        <div class="alert alert-success">@TempData["thong bao"]</div>
+    }
     <div>
         @RenderBody()
     </div>

@@ -22,11 +22,34 @@ namespace SportsStore.WebUI.Controllers
             return View(repository.Products);
         }
 
-        public ViewResult Edit(int productID)
+       
+        public ViewResult Edit(int id)
         {
             Product product = repository.Products
-                .FirstOrDefault(p => p.ProductID == productID);
+                .FirstOrDefault(p => p.ProductID == id);
             return View(product);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.SaveProduct(product);
+                //Chỗ này không thể dùng ViewBag vì RedirectToAction
+                //Dùng session data thì mất công xóa
+                //==> dùng TempData là tốt nhất
+                TempData["Thong bao"] = string
+                .Format("{0} has been saveed", product.Name);
+            return RedirectToAction("Index");
+            }
+            else
+            {
+                //Trường có lỗ gì đó với data (ModelState)
+                return View(product);
+            }
+            
+            
         }
     }
 }
