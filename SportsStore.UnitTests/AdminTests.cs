@@ -32,9 +32,9 @@ namespace SportsStore.UnitTests
             //Action
             Product[] result = ((IEnumerable<Product>)adminController.Index().ViewData.Model)
                 .ToArray();
-            
+
             //Assert
-            Assert.AreEqual(result.Length,3);
+            Assert.AreEqual(result.Length, 3);
             Assert.AreEqual(result[0].Name, "p1");
             Assert.AreEqual(result[1].Name, "p2");
             Assert.AreEqual(result[2].Name, "p3");
@@ -64,7 +64,7 @@ namespace SportsStore.UnitTests
 
 
             //Assert
-            
+
             Assert.AreEqual(p1.Name, "p1");
             Assert.AreEqual(p2.Name, "p2");
             Assert.AreEqual(p3.Name, "p3");
@@ -91,7 +91,7 @@ namespace SportsStore.UnitTests
             AdminController adminController = new AdminController(mock.Object);
 
             //Action
-            
+
             Product p4 = adminController.Edit(4).ViewData.Model as Product;
 
 
@@ -106,12 +106,12 @@ namespace SportsStore.UnitTests
             //Arrange
             //Tạo mock repo
             Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            
+
             //Tạo controller
             AdminController adminController = new AdminController(mock.Object);
 
             //Tạo product
-            Product product = new Product{ Name = "test"};
+            Product product = new Product { Name = "test" };
 
             //Action
             //Save product
@@ -120,9 +120,9 @@ namespace SportsStore.UnitTests
 
             //Assert
             //check that the repository was called
-            mock.Verify(m=>m.SaveProduct(product));
+            mock.Verify(m => m.SaveProduct(product));
             //check the method result type
-            Assert.IsNotInstanceOfType(result,typeof(ViewResult));
+            Assert.IsNotInstanceOfType(result, typeof(ViewResult));
 
         }
 
@@ -149,9 +149,42 @@ namespace SportsStore.UnitTests
 
             //Assert
             //check that the repository was not called
-            mock.Verify(m => m.SaveProduct(It.IsAny<Product>()),Times.Never());
+            mock.Verify(m => m.SaveProduct(It.IsAny<Product>()), Times.Never());
             //check the method result type
             Assert.IsInstanceOfType(result, typeof(ViewResult));
+
+        }
+
+        [TestMethod]
+        public void Can_Delete_Valid_Product()
+        {
+            //Arrange
+            //Tạo một product sẽ được delete
+            Product delProduct = new Product{ ProductID = 2, Name = "p2" };
+            //Tạo mock repo
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[]
+            {
+                new Product {ProductID = 1, Name = "p1"},
+                delProduct,
+                new Product {ProductID = 3, Name = "p3"}
+            });
+
+            //Tạo controller
+            AdminController adminController = new AdminController(mock.Object);
+
+
+
+            //Action
+            //Delete product
+            adminController.Delete(delProduct.ProductID);
+
+
+            //Assert
+            //ensure that the repository delete method was
+            // called with the correct Product
+            mock.Verify(m => m.DeleteProduct(delProduct.ProductID));
+            
 
         }
     }
