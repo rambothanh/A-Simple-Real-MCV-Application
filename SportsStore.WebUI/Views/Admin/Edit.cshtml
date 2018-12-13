@@ -13,8 +13,14 @@
     <div class="panel-heading">
         <h3>Edit @Model.Name</h3>
     </div>
-
-    @using (Html.BeginForm())
+    @*Mặc định: khi submit Html.BeginForm sẽ trở về action vừa gọi
+        view này tức là "Edit" action.
+        Tuy nhiên: ngoài Edit action gọi View này , còn có "Create" action
+        cũng gọi View này, và khi submit thì dữ liệu sẽ gửi về action "Create"
+        mà action này ta lại chưa định nghĩa overload cho nó (vì sử dụng chung với "Edit")
+        Mà ta muốn khi submit thì tất cả đều gọi "Edit" action
+        nên mới thêm hai tham số rõ ràng vào Html.BeginForm("Edit", "Admin") *@
+    @using (Html.BeginForm("Edit", "Admin"))
     {
         <div class="panel-body">
             @Html.HiddenFor(m => m.ProductID)
