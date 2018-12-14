@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SportsStore.Domain.Abstract;
+using SportsStore.Domain.Entities;
 using SportsStore.WebUI.Models;
 
 namespace SportsStore.WebUI.Controllers
@@ -70,6 +71,20 @@ namespace SportsStore.WebUI.Controllers
             ////thêm "?page=2" trên url để điều hướng đến trang 2 của Product
 
 
+        }
+
+        public FileContentResult GetImage(int productId)
+        {
+            Product product = repository.Products.
+                FirstOrDefault(p => p.ProductID == productId);
+            if (product != null)
+            {
+                return File(product.ImageData, product.ImageMimeType);
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }

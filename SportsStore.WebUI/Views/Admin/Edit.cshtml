@@ -20,35 +20,73 @@
         mà action này ta lại chưa định nghĩa overload cho nó (vì sử dụng chung với "Edit")
         Mà ta muốn khi submit thì tất cả đều gọi "Edit" action
         nên mới thêm hai tham số rõ ràng vào Html.BeginForm("Edit", "Admin") *@
-    @using (Html.BeginForm("Edit", "Admin"))
+
+    @*các trình duyệt Web sẽ tải lên các tệp đúng cách chỉ khi phần tử biểu mẫu HTML phai
+        như thế này:
+        <form action="/ Admin / Chỉnh sửa" enctype="multipart/form-data" method="post">*@
+
+    @using (Html.BeginForm("Edit", "Admin",
+        FormMethod.Post,
+        new { enctype = "multipart/form-data" }))
     {
         <div class="panel-body">
             @Html.HiddenFor(m => m.ProductID)
             @foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                if (property.PropertyName != "ProductID")
+                switch (property.PropertyName)
                 {
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @if (property.PropertyName == "Description")
-                        {
-                            @Html.TextArea(property.PropertyName,null, new
+                    case "ProductID":
+                    case "ImageData":
+                    case "ImageMimeType":
+                        //Lam gi do
+                        break;
+                    default:
+
+                        <div class="form-group">
+                            <label>@(property.DisplayName ?? property.PropertyName)</label>
+                            @if (property.PropertyName == "Description")
                             {
-                                @class = "form-control", rows = 5
-                            })
-                        }
-                        else
-                        {
-                            @Html.TextBox(property.PropertyName,null, new
+                                @Html.TextArea(property.PropertyName,null, new
+                                {
+                                    @class = "form-control", rows = 5
+                                })
+                            }
+                            else
                             {
-                                @class ="form-control"
-                            })
-                        }
-                        @*Adding Validation Messages*@
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
+                                @Html.TextBox(property.PropertyName,null, new
+                                {
+                                    @class ="form-control"
+                                })
+                            }
+                            @*Adding Validation Messages*@
+                            @Html.ValidationMessage(property.PropertyName)
+                        </div>
+                        break;
                 }
             }
+
+            <div class="form-group">
+                <div style="position: relative;">
+                    <label>Image</label>
+                    <a class="btn" href="javascript:;">
+                        Choose File...
+                        <input type="file" name="Image" size="40"
+                               style="position:absolute;z-index:2;top:0;left:0;filter: alpha(opacity=0);opacity:0;background-color:transparent;color:transparent;"
+                               onchange='$("#upload-file-info").html($(this).val());' />
+                    </a>
+                    <span id="upload-file-info" class="label label-info"></span>
+                </div>
+                @if (Model.ImageData == null)
+                {
+                    <div class="form-control-static">No Image</div>
+                }
+                else
+                {
+                    <img class="img-thumbnail" width="150" height="150"
+                         src="@Url.Action("GetImage","Product",
+                               new {Model.ProductID})" />
+                }
+            </div>
         </div>
         <div class="panel-footer">
             <input type="submit" value="Save" class="btn btn-primary" />
