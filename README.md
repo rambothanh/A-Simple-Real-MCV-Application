@@ -3,7 +3,7 @@
 ### Deploy: 
 ### http://www.dothethao.somee.com
 
-### Admin page: user: admin, pass: 123456
+### Admin page: user: admin, pass: 
 ### http://www.dothethao.somee.com/admin/index
 
 
