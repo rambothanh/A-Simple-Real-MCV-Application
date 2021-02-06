@@ -17,6 +17,7 @@
         <strong>@Model.Name</strong>
         <span class="pull-right label label-primary">@Model.Price.ToString("c")</span>
     </h3>
+    @*Action: AddToCart,  Controller: Cart*@
     @using (Html.BeginForm("AddToCart", "Cart"))
     {
         <div class="pull-right">
